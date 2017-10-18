@@ -42,6 +42,8 @@
  * @{
  */
 
+uint64_t instruction_counter = 0;
+
 /**
  * Get the value of object[property].
  *
@@ -235,6 +237,8 @@ vm_run_global (const ecma_compiled_code_t *bytecode_p) /**< pointer to bytecode 
                                    NULL,
                                    0);
 
+  printf("vm_run_global: %d\n", instruction_counter);
+
   ecma_deref_object (glob_obj_p);
   return ret_value;
 } /* vm_run_global */
@@ -279,7 +283,7 @@ vm_run_eval (ecma_compiled_code_t *bytecode_data_p, /**< byte-code data */
                                           true,
                                           NULL,
                                           0);
-
+  
   ecma_deref_object (lex_env_p);
   ecma_free_value (this_binding);
   ecma_bytecode_deref (bytecode_data_p);
@@ -771,6 +775,8 @@ vm_loop (vm_frame_ctx_t *frame_ctx_p) /**< frame context */
     /* Internal loop for byte code execution. */
     while (true)
     {
+      instruction_counter++;
+      
       uint8_t *byte_code_start_p = byte_code_p;
       uint8_t opcode = *byte_code_p++;
       uint32_t opcode_data = opcode;
@@ -2835,7 +2841,7 @@ vm_run (const ecma_compiled_code_t *bytecode_header_p, /**< byte-code data heade
   /* Use JERRY_MAX() to avoid array declaration with size 0. */
   ecma_value_t stack[JERRY_MAX (call_stack_size, 1)];
   frame_ctx.registers_p = stack;
-
+  
   return vm_execute (&frame_ctx, arg_list_p, arg_list_len);
 } /* vm_run */
 

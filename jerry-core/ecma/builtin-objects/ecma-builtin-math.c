@@ -165,10 +165,7 @@ ecma_builtin_math_object_max_min (bool is_max, /**< 'max' or 'min' operation */
 static ecma_value_t
 ecma_builtin_math_object_random (void)
 {
-  const ecma_number_t rand_max = (ecma_number_t) RAND_MAX;
-  const ecma_number_t rand_max_min_1 = (ecma_number_t) (RAND_MAX - 1);
-
-  return ecma_make_number_value (((ecma_number_t) rand ()) / rand_max * rand_max_min_1 / rand_max);
+  return ecma_make_number_value (0);
 } /* ecma_builtin_math_object_random */
 
 /**
